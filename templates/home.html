@@ -1,0 +1,19 @@
+<div id="home">
+	<div class="menu">
+		<p>SUMITRACTOR</p>
+		<a href="#" ui-sref=".repairs" class="{{subStateIs('repairs') && 'active' || ' '}}">
+			<i class="fa fa-wrench"></i> Reparaciones
+		</a>
+		<a href="#" ui-sref=".mechanics" class="{{subStateIs('mechanics') && 'active' || ' '}}">
+			<i class="fa fa-user"></i> Mechanicos
+		</a>
+		<a href="#" ui-sref=".settings" class="{{subStateIs('settings') && 'active' || ' '}}">
+			<i class="fa fa-cogs"></i> Ajustes
+		</a>
+		<a href="#" ng-click="logout()" ui-sref=".login" class="logout">
+			<i class="fa fa-power-off"></i> Salir
+		</a>
+	</div>
+	<div class="body" ui-view>
+	</div>
+</div>

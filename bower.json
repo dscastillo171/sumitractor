@@ -1,0 +1,12 @@
+{
+	"name": "sumitractor",
+	"version": "1.0.0",
+	"dependencies": {
+		"bootstrap": "latest",
+		"font-awesome": "latest",
+		"angular": "latest",
+		"angular-ui-router": "latest",
+		"angular-bootstrap": "latest",
+		"angular-cookies": "latest"
+	}
+}

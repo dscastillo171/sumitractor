@@ -1,0 +1,66 @@
+html, body, #app {width: 100%; height: 100%; margin: 0;}
+
+::-webkit-input-placeholder {font-weight: 200;}
+:-moz-placeholder {font-weight: 200;}
+::-moz-placeholder {font-weight: 200;}
+:-ms-input-placeholder {font-weight: 200;}
+
+#login {width: 100%; height: 100%; background-color: #000; background-image: url(../images/login.jpg); background-repeat:no-repeat; -webkit-background-size: cover; 
+	-moz-background-size: cover; -o-background-size: cover; background-size: cover;}
+#login .loginRow {width: 320px; margin: 0 auto; left: 10%; top: 50%; position: absolute; margin-top: -130px;}
+#login .loginRow > p {color: #FFF; font-weight: 900; font-size: 30px; letter-spacing: 8px; text-align: center;}
+#login .loginRow > div {background-color: #FFF; border-radius: 5px;   padding: 10px 20px 25px 20px; font-size: 18px;}
+#login .loginRow > div input {display: block; width: 100%; border-width: 0 0 1px 0; border-color: #CCC; margin: 10px 0; padding: 10px 0 10px 5px;}
+#login .loginRow > div input:focus {outline: none;}
+#login .loginRow > div div {text-align: center; color: #000; background-color: #FFA926; font-weight: 200; padding: 6px 0px; margin: 22px 0 0; border-radius: 5px;
+	letter-spacing: 1px; cursor: pointer;}
+#login .loginRow > div div:hover {background-color: #FFB33F;}
+
+#home {width: 100%; height: 100%;}
+#home .menu {position: relative; width: 230px; height: 100%; float: left; background-color: #333;}
+#home .menu > p {color: #FFB33F; text-align: center; font-weight: 200; height: 80px; line-height: 80px; font-size: 18px; letter-spacing: 6px; 
+	border-bottom: thin solid #444; margin: 0}
+#home .menu > a {display: block; height: 50px; line-height: 50px; color: #FFF; font-size: 18px; font-weight: 100; letter-spacing: 1px; padding: 0 20px; cursor: pointer;}
+#home .menu > a:hover {background-color: #444; text-decoration: none;} #home .menu > a:focus {text-decoration: none;}
+#home .menu > a .fa {margin: 0 5px 0 0;}
+#home .menu .active {border-left: 5px solid #FFA926; padding-left: 15px; background-color: #444;}
+#home .menu .logout {position: absolute; bottom: 0; width: 100%; height: 60px; line-height: 60px; text-align: center; border-top: thin solid #444;} 
+#home .menu .logout .fa {color: #FFA926;}
+#home .body {height: 100%; width: 100%; padding: 0 0 0 230px;}
+
+#repairs {position: relative; width: 100%; height: 100%;}
+#repairs .list {position: absolute; top: 0; left: 0; width: 230px; height: 100%; background-color: #BF7F1C;}
+#repairs .list > div {padding: 0 15px; color: #FFF;}
+#repairs .list .search {height: 80px; line-height: 80px; font-size: 18px; border-bottom: thin solid #CF8F2C;}
+#repairs .list .search input {width: 170px; margin: 0 0 0 8px; line-height: normal; background-color: #BF7F1C; border-width: 0;}
+#repairs .list .search input:focus {outline: none;}
+#repairs .list .search ::-webkit-input-placeholder {color: #FFF; font-weight: 100;letter-spacing: 1px;}
+#repairs .list .search :-moz-placeholder {color: #FFF; font-weight: 100; letter-spacing: 1px;}
+#repairs .list .search ::-moz-placeholder {color: #FFF; font-weight: 100; letter-spacing: 1px;}
+#repairs .list .search :-ms-input-placeholder {color: #FFF; font-weight: 100; letter-spacing: 1px;}
+#repairs .list .items {padding: 0;}
+#repairs .list .items > div {position: relative; padding: 0 15px 0; color: #FFF; font-size: 18px; font-weight: 100; height: 50px; line-height: 50px; cursor: pointer;}
+#repairs .list .items > div:hover {background-color: #CF8F2C;}
+#repairs .list .items .active {background-color: #CF8F2C;}
+#repairs .list .items .active .arrow {position: absolute; right: 0; top: 50%; margin-top: -10px; width: 0; height: 0; border-top: 10px solid transparent; 
+	border-bottom: 10px solid transparent; border-right:10px solid #F5F5F5;} 
+#repairs .list .new {position: absolute; bottom: 0; width: 100%; height: 60px; line-height: 60px; text-align: center; border-top: thin solid #CF8F2C; 
+	font-size: 18px; font-weight: 100; cursor: pointer;}
+#repairs .list .new:hover {background-color: #CF8F2C;}
+
+#repairs .repair {position: relative; padding: 0 0 0 230px; height: 100%;}
+#repairs .repair .posts {padding: 0 230px 0 0; min-height: 100%; background-color: #F5F5F5;}
+#repairs .repair .posts .tittle {height: 80px; line-height: 80px; font-size: 18px; padding: 0 25px; font-weight: 800; letter-spacing: 1px; background-color: #FFF;}
+#repairs .repair .posts .tittle span {display: inline-block; float: right; color: #FFA926; cursor: pointer; font-weight: 200;}
+#repairs .repair .posts .tittle span:hover {color: #E59822;}
+#repairs .repair .posts .post {padding: 20px 15px; margin: 20px 15px; background-color: #FFF;}
+#repairs .repair .posts .post > div:nth-child(1) {font-size: 16px; letter-spacing: 1px; font-weight: 600; margin: 0 0 10px 0;}
+#repairs .repair .posts .post > div:nth-child(1) span {display: inline-block; float: right; font-weight: 200; color: #777;}
+#repairs .repair .posts .post > div:nth-child(2) img {height: 100px;   margin: 0 5px 10px 0;}
+#repairs .repair .posts .post > p {text-align: justify;}
+#repairs .repair .details {position: absolute; top: 0; right: 0; width: 230px; height: 100%; background-color: #FFF; border-left: thin solid #F5F5F5; padding: 0 15px;}
+#repairs .repair .details .tittle {height: 80px; line-height:80px; letter-spacing: 1px; font-weight: 800; font-size: 18px;} 
+#repairs .repair .details .number {margin: 10px 0 15px 0;}
+#repairs .repair .details .number span {display: block;}
+#repairs .repair .details .number span:nth-child(1) {color: #777;}
+#repairs .repair .details .number span:nth-child(2) {font-size: 18px; font-weight: 200;}
