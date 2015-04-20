@@ -62,7 +62,7 @@
 <div class="modal-footer">
     <span ng-show="errorText"><i class="fa fa-exclamation-triangle"></i> {{errorText}}</span>
     <button type="button" class="btn btn-default" ng-disabled="loading" ng-click="create()">
-        Crear <i ng-show="loading" class="fa fa-spinner fa-pulse"></i>
+        <span ng-hide="editing">Crear</span><span ng-show="editing">Guardar</span> <i ng-show="loading" class="fa fa-spinner fa-pulse"></i>
     </button>
 	<button type="button" class="btn btn-default" ng-click="dismiss()">
         Cancelar

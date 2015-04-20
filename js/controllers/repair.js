@@ -595,29 +595,31 @@ angular.module('sumiApp').controller('repairsController', ['$scope', '$rootScope
 			var promises = [];
 			angular.forEach(activeSteps, function(step){
 				angular.forEach(step.publications, function(publication){
-					angular.forEach(publication.images, function(imageURL){
-						promises.push($q(function(resolve, reject){
-							var img = new Image();
-							img.setAttribute('crossOrigin', 'anonymous');
-							img.src = imageURL;
-							img.onload = function(){
-								// Draw the image into the canvas.
-								var canvas = document.createElement("canvas");
-								canvas.width =this.width;
-								canvas.height =this.height;
-								var ctx = canvas.getContext("2d");
-								ctx.drawImage(this, 0, 0);
+					if(!publication.isPrivate){
+						angular.forEach(publication.images, function(imageURL){
+							promises.push($q(function(resolve, reject){
+								var img = new Image();
+								img.setAttribute('crossOrigin', 'anonymous');
+								img.src = imageURL;
+								img.onload = function(){
+									// Draw the image into the canvas.
+									var canvas = document.createElement("canvas");
+									canvas.width =this.width;
+									canvas.height =this.height;
+									var ctx = canvas.getContext("2d");
+									ctx.drawImage(this, 0, 0);
 
-								// Extract the data url.
-								var dataURL = canvas.toDataURL("image/png");
-								imageData[imageURL] = {url: dataURL, width: canvas.width, height: canvas.height};
-								resolve();
-							};
-							img.onerror = function(){
-								resolve();
-							};
-						}));
-					});
+									// Extract the data url.
+									var dataURL = canvas.toDataURL("image/png");
+									imageData[imageURL] = {url: dataURL, width: canvas.width, height: canvas.height};
+									resolve();
+								};
+								img.onerror = function(){
+									resolve();
+								};
+							}));
+						});
+					}
 				});
 			});
 
@@ -652,37 +654,39 @@ angular.module('sumiApp').controller('repairsController', ['$scope', '$rootScope
 		            incrementVerticalOffset(15);
 
 		            angular.forEach(step.publications, function(publication){
-		            	// Publication tittle.
-		            	doc.setTextColor(0);
-		            	doc.setFontSize(16);
-			            doc.text(20, verticalOffset, publication.title);
-			            doc.setTextColor(150);
-			    		doc.setFontSize(14);
-						doc.text(160, verticalOffset, $filter('date')(publication.date, 'MMM dd, yyyy'));
-						incrementVerticalOffset(10);
+		            	if(!publication.isPrivate){
+		            		// Publication tittle.
+			            	doc.setTextColor(0);
+			            	doc.setFontSize(16);
+				            doc.text(20, verticalOffset, publication.title);
+				            doc.setTextColor(150);
+				    		doc.setFontSize(14);
+							doc.text(160, verticalOffset, $filter('date')(publication.date, 'MMM dd, yyyy'));
+							incrementVerticalOffset(10);
 
-						// Publication text.
-						doc.setTextColor(0);
-						doc.setFontSize(14);
-						var lines = doc.splitTextToSize(publication.text, 170);
-						doc.text(20, verticalOffset, lines);
-						incrementVerticalOffset(((lines.length + 0.5) * 14) / 2.5);
+							// Publication text.
+							doc.setTextColor(0);
+							doc.setFontSize(14);
+							var lines = doc.splitTextToSize(publication.text, 170);
+							doc.text(20, verticalOffset, lines);
+							incrementVerticalOffset(((lines.length + 0.5) * 14) / 2.5);
 
-						// Draw the images.
-						angular.forEach(publication.images, function(imageURL){
-							var imageObj = imageData[imageURL];
-							var ratio = imageObj.height / imageObj.width;
-							var height = 170 * ratio;
-							if(verticalOffset + height > 230){
-								doc.addPage();
-								verticalOffset = 20;
-							}
-							doc.addImage(imageObj.url, 'PNG', 20, verticalOffset, 170, 0);
-							incrementVerticalOffset(height + 10);
-						});
+							// Draw the images.
+							angular.forEach(publication.images, function(imageURL){
+								var imageObj = imageData[imageURL];
+								var ratio = imageObj.height / imageObj.width;
+								var height = 170 * ratio;
+								if(verticalOffset + height > 230){
+									doc.addPage();
+									verticalOffset = 20;
+								}
+								doc.addImage(imageObj.url, 'PNG', 20, verticalOffset, 170, 0);
+								incrementVerticalOffset(height + 10);
+							});
 
-						// End of publication.
-						incrementVerticalOffset(15);
+							// End of publication.
+							incrementVerticalOffset(15);
+		            	}
 		            });
 
 				});

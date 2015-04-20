@@ -7,7 +7,7 @@ angular.module('sumiApp').controller('loginController', ['$scope', '$http', '$q'
 				// Make the request.
 				var agent = $scope.user + ':' + $scope.password;
 				$http.defaults.headers.common.Authorization = 'Basic ' + $base64.encode(agent);
-				$http.head('https://sumitractor2.herokuapp.com/').then(function(){
+				$http.head('https://sumitractor2.herokuapp.com/processes').then(function(){
 					// Save the cookie.
 					$cookieStore.put('com.sumi.ts', new Date().getTime());
 					$cookieStore.put('com.sumi.ag', agent);
