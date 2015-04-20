@@ -2,9 +2,13 @@
 	<div class="loginRow">
 		<p>SUMITRACTOR</p>
 		<div>
-			<input type="text" placeholder="Usuario" />
-			<input type="password" placeholder="Contraseña" />
-			<div>Ingresar</div>
+			<form ng-submit="submit()">
+				<input type="text" placeholder="Usuario" ng-model="user" />
+				<input type="password" placeholder="Contraseña" ng-model="password" />
+				<input ng-show="false" type="submit" />
+				<div ng-click="submit()"><i ng-show="loading" class="fa fa-spinner fa-pulse"></i> Ingresar</div>
+				<span ng-show="error" class="error">Usuario o contraseña incorrecta.</span>
+			</form>
 		</div>
 	</div>
 </div>

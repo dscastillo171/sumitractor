@@ -7,6 +7,9 @@
 		"angular": "latest",
 		"angular-ui-router": "latest",
 		"angular-bootstrap": "latest",
-		"angular-cookies": "latest"
+		"angular-cookies": "latest",
+		"angular-base64": "latest",
+		"ng-file-upload": "latest",
+		"jspdf": "latest"
 	}
 }

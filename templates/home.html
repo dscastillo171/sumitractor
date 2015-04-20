@@ -10,9 +10,9 @@
 		<a href="#" ui-sref=".settings" class="{{subStateIs('settings') && 'active' || ' '}}">
 			<i class="fa fa-cogs"></i> Ajustes
 		</a>
-		<a href="#" ng-click="logout()" ui-sref=".login" class="logout">
+		<div ng-click="logout()" class="logout">
 			<i class="fa fa-power-off"></i> Salir
-		</a>
+		</div>
 	</div>
 	<div class="body" ui-view>
 	</div>

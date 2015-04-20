@@ -1,66 +1,90 @@
-<div id="repairs">
+<div id="repairs" ng-init="init()">
 	<div class="list">
 		<div class="search">
-			<i class="fa fa-search"></i><input type="text" placeholder="Buscar reparaciones" />
+			<i class="fa fa-search"></i><input type="text" placeholder="Buscar reparaciones" ng-model="searchQuery" />
 		</div>
 		<div class="items">
-			<div class="active">
-				346-34567-345
-				<div class="arrow"></div>
-			</div>
 			<div>
-				834-76138-612
-				<div class="arrow"></div>
-			</div>
-			<div>
-				091-33854-024
-				<div class="arrow"></div>
+				<div ng-show="processes == null" class="loading"><i class="fa fa-spinner fa-pulse"></i></div>
+				<div ng-repeat="process in processes" class="{{processIsActive(process._id) && 'active' || ' '}}" ng-click="setAsActiveProcess(process)">
+					{{process.name}}
+				</div>
 			</div>
 		</div>
-		<div class="new">
+		<div class="new" ng-click="addProcess()">
 			<i class="fa fa-plus"></i> Nueva reparación
 		</div>
 	</div>
 	<div class="repair">
 		<div class="details">
-			<div class="tittle">346-34567-345</div>
-			<div class="number">
-				<span>Anotaciones</span>
-				<span>3</span>
+			<div class="tittle">
+				<span ng-show="activeSteps != null && activeSteps.length > 0" ng-click="downloadReport()">
+					<i class="fa fa-file-pdf-o" ng-hide="loadingReport"></i>
+					<i class="fa fa-spinner fa-pulse" ng-show="loadingReport"></i> Generar reporte
+				</span>
 			</div>
 			<div class="number">
-				<span>Primera anotación</span>
-				<span>23/04/15</span>
+				<span>
+					Identificador
+					<i class="fa fa-pencil-square-o edit" ng-show="editName == EDIT.STILL" ng-click="editName = EDIT.EDITING; nameDraft = activeProcess.name"></i>
+					<i class="fa fa-check-square-o edit" ng-show="editName == EDIT.EDITING" ng-click="saveName()"></i>
+					<i class="fa fa-spinner fa-pulse edit" ng-show="editName == EDIT.LOADING"></i>
+				</span>
+				<span ng-show="editName == EDIT.STILL">{{activeProcess.name || '-'}}</span>
+				<input ng-hide="editName == EDIT.STILL" type="text" ng-model="nameDraft" />
 			</div>
-			<div class="number">
-				<span>Ultima anotación</span>
-				<span>24/06/15</span>
+			<div class="number" ng-show="activeSteps.length > 0">
+				<span>
+					Anotaciones
+					<i class="fa fa-plus-square-o edit" ng-click="addPublication()"></i>
+				</span>
+				<span>{{publicationsCount || '-'}}</span>
+			</div>
+			<div class="steps">
+				<span>
+					Pasos
+					<i class="fa fa-pencil-square-o edit" ng-show="editSteps == EDIT.STILL" ng-click="startEditSteps()"></i>
+					<i class="fa fa-check-square-o edit" ng-show="editSteps == EDIT.EDITING" ng-click="saveSteps()"></i>
+					<i class="fa fa-spinner fa-pulse edit" ng-show="editSteps == EDIT.LOADING"></i>
+					<i class="fa fa-plus-square-o edit" ng-show="editSteps == EDIT.STILL" ng-click="addStep()"></i>
+				</span>
+				<span ng-show="!activeSteps || activeSteps.length == 0">-</span>
+				<span ng-repeat="step in activeSteps">
+					<div ng-hide="editSteps == EDIT.EDITING">{{step.name}}</div>
+					<input ng-show="editSteps == EDIT.EDITING" type="text" ng-model="stepsDraft[step._id]" />
+					<span ng-show="editSteps == EDIT.EDITING">
+						<i ng-click="step.order != activeSteps.length  && moveStep(step, false)" class="fa fa-caret-down {{step.order == activeSteps.length && 'disabled' || ' '}}"></i>
+						<i ng-click="step.order != 1 && moveStep(step, true)" class="fa fa-caret-up {{step.order == 1 && 'disabled' || ' '}}"></i>
+					</span>
+				</span>
+			</div>
+			<div class="number" ng-show="activeProcess">
+				<span>
+					Acciones
+				</span>
+				<span class="delete" ng-click="deleteProcess()"><i class="fa fa-trash-o"></i> Eliminar</span>
 			</div>
 		</div>
 		<div class="posts">
-			<div class="tittle">Historial<span><i class="fa fa-plus"></i> Nueva anotación</span></div>
+			<div ng-show="activeSteps == null" class="loading"><i class="fa fa-spinner fa-pulse"></i></div>
+			<div ng-show="activeSteps.length == 0" class="blank">Esta reparación todavía no tiene pasos definidos.</div>
+			<div class="tittle">
+				{{activeProcess.name}}
+			</div>
 			<div class="postsList">
-				<div class="post">
-					<div>Titulo 3<span>24/06/15</span></div>
-					<div>
-						<img src="images/placeholder.png" />
-						<img src="images/placeholder.png" />
-						<img src="images/placeholder.png" />
+				<div ng-repeat="step in activeSteps | reverse">
+					<div ng-show="step.name" class="stepTittle"><span></span><span>{{step.name}}</span></div>
+					<div ng-show="step.publications.length == 0" class="blankPublications">Este paso todavía no tiene anotaciones.</div>
+					<div class="post" ng-repeat="post in step.publications | reverse">
+						<div>{{post.title || '-'}}<span class="private"><span ng-show="post.isPrivate">Privado</span></span><span class="date">{{post.date | date : 'dd/MM/yy'}}</span></div>
+						<div>
+							<img ng-repeat="image in post.images" ng-src="{{image}}" ng-click="openImage(image)" class="img-thumbnail"/>
+						</div>
+						<p>{{post.text}}</p>
+						<span class="edit" ng-click="deletePublication(post._id)"><i class="fa fa-trash-o"></i></span>
+						<span class="edit" ng-click="editPost(post)"><i class="fa fa-pencil-square-o"></i></span>
 					</div>
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-				</div>
-				<div class="post">
-					<div>Titulo 2<span>11/06/15</span></div>
-					<div>
-					</div>
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-				</div>
-				<div class="post">
-					<div>Titulo 1<span>23/04/15</span></div>
-					<div>
-						<img src="images/placeholder.png" />
-					</div>
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+					
 				</div>
 			</div>
 		</div>

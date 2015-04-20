@@ -1,9 +1,13 @@
-html, body, #app {width: 100%; height: 100%; margin: 0;}
+html, body, #app {width: 100%; height: 100%; margin: 0; min-width: 980px; min-height: 620px;}
 
 ::-webkit-input-placeholder {font-weight: 200;}
 :-moz-placeholder {font-weight: 200;}
 ::-moz-placeholder {font-weight: 200;}
 :-ms-input-placeholder {font-weight: 200;}
+
+::-webkit-scrollbar {width: 5px; background-color: transparent;}
+::-webkit-scrollbar-track {background-color: transparent;}
+::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0.20);}
 
 #login {width: 100%; height: 100%; background-color: #000; background-image: url(../images/login.jpg); background-repeat:no-repeat; -webkit-background-size: cover; 
 	-moz-background-size: cover; -o-background-size: cover; background-size: cover;}
@@ -15,52 +19,110 @@ html, body, #app {width: 100%; height: 100%; margin: 0;}
 #login .loginRow > div div {text-align: center; color: #000; background-color: #FFA926; font-weight: 200; padding: 6px 0px; margin: 22px 0 0; border-radius: 5px;
 	letter-spacing: 1px; cursor: pointer;}
 #login .loginRow > div div:hover {background-color: #FFB33F;}
+#login .error {display: block; color: #FF0033; font-weight: 200; font-size: 16px; margin: 12px 0 0;}
 
 #home {width: 100%; height: 100%;}
-#home .menu {position: relative; width: 230px; height: 100%; float: left; background-color: #333;}
+#home .menu {position: fixed; width: 230px; height: 100%; float: left; background-color: #333;}
 #home .menu > p {color: #FFB33F; text-align: center; font-weight: 200; height: 80px; line-height: 80px; font-size: 18px; letter-spacing: 6px; 
 	border-bottom: thin solid #444; margin: 0}
 #home .menu > a {display: block; height: 50px; line-height: 50px; color: #FFF; font-size: 18px; font-weight: 100; letter-spacing: 1px; padding: 0 20px; cursor: pointer;}
 #home .menu > a:hover {background-color: #444; text-decoration: none;} #home .menu > a:focus {text-decoration: none;}
 #home .menu > a .fa {margin: 0 5px 0 0;}
 #home .menu .active {border-left: 5px solid #FFA926; padding-left: 15px; background-color: #444;}
-#home .menu .logout {position: absolute; bottom: 0; width: 100%; height: 60px; line-height: 60px; text-align: center; border-top: thin solid #444;} 
+#home .menu .logout {position: absolute; bottom: 0; width: 100%; height: 60px; line-height: 60px; text-align: center; border-top: thin solid #444; color: #FFF; font-size: 18px; font-weight: 100; letter-spacing: 1px; cursor: pointer;} 
 #home .menu .logout .fa {color: #FFA926;}
+#home .menu .logout:hover {background-color: #444;}
 #home .body {height: 100%; width: 100%; padding: 0 0 0 230px;}
 
 #repairs {position: relative; width: 100%; height: 100%;}
-#repairs .list {position: absolute; top: 0; left: 0; width: 230px; height: 100%; background-color: #BF7F1C;}
+#repairs .list {position: fixed; top: 0; left: 230px; width: 230px; height: 100%; background-color: #BF7F1C; z-index: 5;}
 #repairs .list > div {padding: 0 15px; color: #FFF;}
-#repairs .list .search {height: 80px; line-height: 80px; font-size: 18px; border-bottom: thin solid #CF8F2C;}
+#repairs .list .search {position: relative; z-index: 10; height: 80px; line-height: 80px; font-size: 18px; border-bottom: thin solid #CF8F2C;}
 #repairs .list .search input {width: 170px; margin: 0 0 0 8px; line-height: normal; background-color: #BF7F1C; border-width: 0;}
 #repairs .list .search input:focus {outline: none;}
 #repairs .list .search ::-webkit-input-placeholder {color: #FFF; font-weight: 100;letter-spacing: 1px;}
 #repairs .list .search :-moz-placeholder {color: #FFF; font-weight: 100; letter-spacing: 1px;}
 #repairs .list .search ::-moz-placeholder {color: #FFF; font-weight: 100; letter-spacing: 1px;}
 #repairs .list .search :-ms-input-placeholder {color: #FFF; font-weight: 100; letter-spacing: 1px;}
-#repairs .list .items {padding: 0;}
-#repairs .list .items > div {position: relative; padding: 0 15px 0; color: #FFF; font-size: 18px; font-weight: 100; height: 50px; line-height: 50px; cursor: pointer;}
-#repairs .list .items > div:hover {background-color: #CF8F2C;}
+#repairs .list .items {width: 100%; height: 100%; position: absolute; top: 0; padding: 80px 0 60px; z-index: 5;}
+#repairs .list .items > div {height: 100%; overflow-y: auto;}
+#repairs .list .items > div > div {position: relative; padding: 0 15px 0; color: #FFF; font-size: 18px; font-weight: 100; height: 50px; line-height: 50px; cursor: pointer;}
+#repairs .list .items > div > div:hover {background-color: #CF8F2C;}
 #repairs .list .items .active {background-color: #CF8F2C;}
-#repairs .list .items .active .arrow {position: absolute; right: 0; top: 50%; margin-top: -10px; width: 0; height: 0; border-top: 10px solid transparent; 
-	border-bottom: 10px solid transparent; border-right:10px solid #F5F5F5;} 
-#repairs .list .new {position: absolute; bottom: 0; width: 100%; height: 60px; line-height: 60px; text-align: center; border-top: thin solid #CF8F2C; 
+#repairs .list .items .loading {text-align: center;}
+#repairs .list .new {position: absolute; z-index: 15; bottom: 0; width: 100%; height: 60px; line-height: 60px; text-align: center; border-top: thin solid #CF8F2C; 
 	font-size: 18px; font-weight: 100; cursor: pointer;}
 #repairs .list .new:hover {background-color: #CF8F2C;}
 
 #repairs .repair {position: relative; padding: 0 0 0 230px; height: 100%;}
-#repairs .repair .posts {padding: 0 230px 0 0; min-height: 100%; background-color: #F5F5F5;}
-#repairs .repair .posts .tittle {height: 80px; line-height: 80px; font-size: 18px; padding: 0 25px; font-weight: 800; letter-spacing: 1px; background-color: #FFF;}
-#repairs .repair .posts .tittle span {display: inline-block; float: right; color: #FFA926; cursor: pointer; font-weight: 200;}
-#repairs .repair .posts .tittle span:hover {color: #E59822;}
-#repairs .repair .posts .post {padding: 20px 15px; margin: 20px 15px; background-color: #FFF;}
+#repairs .repair .posts {padding: 0 230px 0 0; min-height: 100%; background-color: #F5F5F5; min-width: 500px;}
+#repairs .repair .posts .tittle {height: 80px; line-height: 80px; font-size: 20px; padding: 0 25px; font-weight: 800; letter-spacing: 1px; background-color: #FFF;}
+#repairs .repair .posts .postsList {padding: 10px 0;}
+#repairs .repair .posts .stepTittle {position: relative; text-align: center; height: 40px; line-height: 40px;}
+#repairs .repair .posts .stepTittle span:nth-child(1) {position: absolute; left: 20%; top: 25px;  width: 60%; height: 1px; background-color: #DDD;}
+#repairs .repair .posts .stepTittle span:nth-child(2) {position: relative; z-index: 10; font-size: 16px; color: #777; background-color: #F5F5F5; font-weight: 200;   padding: 0 25px;}
+#repairs .repair .posts .post {padding: 20px 15px; margin: 15px; background-color: #FFF;}
 #repairs .repair .posts .post > div:nth-child(1) {font-size: 16px; letter-spacing: 1px; font-weight: 600; margin: 0 0 10px 0;}
-#repairs .repair .posts .post > div:nth-child(1) span {display: inline-block; float: right; font-weight: 200; color: #777;}
-#repairs .repair .posts .post > div:nth-child(2) img {height: 100px;   margin: 0 5px 10px 0;}
+#repairs .repair .posts .post > div:nth-child(1) .private {font-size: 12px; color: #777; font-weight: 200; margin: 0 0 0 5px;}
+#repairs .repair .posts .post > div:nth-child(1) .date {display: inline-block; float: right; font-weight: 200; color: #777;}
+#repairs .repair .posts .post > div:nth-child(2) img {cursor: pointer; height: 100px; margin: 0 8px 10px 0;}
 #repairs .repair .posts .post > p {text-align: justify;}
-#repairs .repair .details {position: absolute; top: 0; right: 0; width: 230px; height: 100%; background-color: #FFF; border-left: thin solid #F5F5F5; padding: 0 15px;}
-#repairs .repair .details .tittle {height: 80px; line-height:80px; letter-spacing: 1px; font-weight: 800; font-size: 18px;} 
-#repairs .repair .details .number {margin: 10px 0 15px 0;}
+#repairs .repair .posts .edit {display: inline-block; float: right; cursor: pointer; color: #FFA926; margin: -6px 0 0 10px; font-size: 16px; font-weight: 200;}
+#repairs .repair .posts .edit:hover {color: #E5A139;}
+#repairs .repair .posts .edit:nth-child(5) {margin-top: -5px;}
+#repairs .repair .posts .loading {position: absolute; left: 50%; top: 50%; margin-left: -12px; margin-top: -17px;color: #FFA926; font-size: 26px; text-align: center;}
+#repairs .repair .posts .blank {position: absolute; top: 50%; margin-top: -13px; left: 50%; margin-left: -220px; color: #777; font-size: 18px; font-weight: 200;}
+#repairs .repair .posts .blankPublications {color: #777; font-size: 18px; font-weight: 200; text-align: center;}
+
+#repairs .repair .details {position: absolute; top: 0; right: 0; width: 230px; height: 100%;}
+#repairs .repair .details .fa.edit {display: inline-block; float: right; font-size: 16px; line-height: 25px; margin: 0 0 0 5px;}
+#repairs .repair .details .fa {cursor: pointer; color: #FFA926;}
+#repairs .repair .details .fa.disabled {cursor: default; opacity: 0.25;}
+#repairs .repair .details .fa:hover {color: #E5A139;}
+#repairs .repair .details .tittle {height: 80px; background-color: #FFF; margin-bottom: 25px; text-align: center;}
+#repairs .repair .details .tittle span {display: inline-block; padding: 5px 15px; cursor: pointer; color: #FFA926; border: thin solid #FFA926; margin: 24px 0; border-radius: 4px;}
+#repairs .repair .details .tittle span:hover {color: #E5A139;}
+#repairs .repair .details .number {margin: 15px 25px 20px;}
 #repairs .repair .details .number span {display: block;}
-#repairs .repair .details .number span:nth-child(1) {color: #777;}
-#repairs .repair .details .number span:nth-child(2) {font-size: 18px; font-weight: 200;}
+#repairs .repair .details .number span:nth-child(1) {font-size: 15px; color: #777; font-weight: 300;}
+#repairs .repair .details .number span:nth-child(2) {font-size: 17px; font-weight: 200;}
+#repairs .repair .details .number input {font-size: 16px; padding: 2px 10px; width: 100%; margin: 4px 0 0; outline-color: #FFA926; outline-width: 4px;}
+#repairs .repair .details .number .delete {cursor: pointer; color: #FFA926;}
+#repairs .repair .details .number .delete:hover {color: #E5A139;}
+#repairs .repair .details .steps {margin: 15px 25px 20px; font-size: 17px; font-weight: 200;}
+#repairs .repair .details .steps > span {position: relative; display: block; height: 28px;}
+#repairs .repair .details .steps > span span .fa {display: inline-block; float: right;}
+#repairs .repair .details .steps > span span .fa:nth-child(1) {top: 2px;}
+#repairs .repair .details .steps > span span .fa:nth-child(2) {bottom: 2px;}
+#repairs .repair .details .steps > span:nth-child(1) {font-size: 15px; color: #777; font-weight: 300;}
+#repairs .repair .details .steps input {width: 150px; height: 24px; font-size: 14px; line-height: 24px; padding: 0 5px; margin: 2px 0;}
+#repairs .repair .details .steps .fa {line-height: 28px;}
+
+.modal-header .warning {color: #BF7F1C;}
+.modal-body .newProcess {font-size: 18px; padding: 2px 10px; width: 100%; margin: 10px 10px 10px 0; outline-color: #FFA926; outline-width: 4px;}
+.modal-body .error {color: #FF0033;}
+.modal-body .warning {font-size: 16px; margin: 10px 0;}
+.modal-body.newPublication > div {margin: 0 5px 20px;}
+.modal-body.newPublication .date {width: 180px; float: right;}
+.modal-body.newPublication .date .dropdown-menu {padding: 8px; left: inherit !important; right: 0 !important;}
+.modal-body.newPublication .date .dropdown-menu * {outline: none !important;}
+.modal-body.newPublication .step {width: 320px; position: relative;}
+.modal-body.newPublication .step .btn {text-align: left; border-radius: 4px;}
+.modal-body.newPublication .step .caret {margin: 8px 0; display: inline-block; float: right;}
+.modal-body.newPublication .tittle {display: block; margin: 0 0 4px; color: #777; font-weight: 200; width: 250px;}
+.modal-body.newPublication .visibility {position: relative; display: inline-block; float: right; width: 180px;}
+.modal-body.newPublication .visibility .btn {text-align: left; border-radius: 4px;}
+.modal-body.newPublication .visibility .caret {margin: 8px 0; display: inline-block; float: right;}
+.modal-body.newPublication .stepName {width: 320px;}
+.modal-body.newPublication .stepName input {line-height: 28px; border-radius: 4px; border: thin solid #CCC; width: 100%; padding: 6px 12px; font-size: 14px;}
+.modal-body.newPublication .text textarea {width: 100%; height: 100px; resize: none; border: thin solid #CCC; border-radius: 4px; padding: 6px 12px; font-size: 14px;}
+.modal-body.newPublication .images .uploadedImage {position: relative; display: inline-block; height: 120px; margin: 5px 8px 10px 0;}
+.modal-body.newPublication .images .uploadedImage img {height: 100%;}
+.modal-body.newPublication .images .uploadedImage span {display: block; position: absolute; right: -6px; top: -12px; font-size: 18px; cursor: pointer; color: #000;}
+.modal-body.newPublication .images .uploadedImage span:hover {color: #444;}
+.modal-footer .fa-spinner {color: #FFA926; margin: 0 0 0 5px;}
+.modal-footer > span {display: inline-block; float: left; color: #FF0033; margin: 6px 0;}
+.modalImage {width: 100%;}
+
+.construction {width: 100%; height: 100%; text-align: center;}
+.construction > div {position: relative; top: 50%; font-size: 20px; margin-top: -14px; color: #777; font-weight: 200;}

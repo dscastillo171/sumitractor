@@ -1,0 +1,70 @@
+<div class="modal-header ng-scope">
+    <h3 class="modal-title">
+    	Agregar anotación
+    </h3>
+</div>
+<div class="modal-body newPublication">
+    <div>
+        <div class="date">
+            <span class="tittle">Fecha de publicación</span>
+            <div class="input-group">
+                <input type="text" class="form-control" datepicker-popup="MMM dd, yyyy" ng-model="date" show-button-bar="false" is-open="opened" placeholder="{{today | date}}"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="step" dropdown>
+            <span class="tittle">Paso</span>
+            <button type="button" class="btn btn-default dropdown-toggle btn-block" dropdown-toggle>
+                {{selectedStep.name}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="step in activeSteps"><a href="#" ng-click="selectStep(step)">{{step.name}}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <div class="visibility" dropdown>
+            <span class="tittle">Visibilidad</span>
+            <button type="button" class="btn btn-default dropdown-toggle btn-block" dropdown-toggle>
+                <span ng-show="private">Privada</span><span ng-hide="private">Pública</span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#" ng-click="setPrivate(false)">Pública</a></li>
+                <li><a href="#" ng-click="setPrivate(true)">Privada</a></li>
+            </ul>
+        </div>
+        <div class="stepName">
+            <span class="tittle">Título</span>
+            <input type="text" ng-model="title" />
+        </div>
+    </div>
+    <div class="text">
+        <span class="tittle">Texto</span>
+        <textarea ng-model="text"></textarea>
+    </div>
+    <div class="images">
+        <span class="tittle">Imágenes</span>
+        <div>
+            <div class="uploadedImage" ng-repeat="image in images">
+                <img ng-src="{{image}}" class="img-thumbnail"/>
+                <span ng-click="removeImage(image)"><i class="fa fa-times-circle"></i></span>
+            </div>
+            <div class="uploadedImage" ng-repeat="file in files">
+                <img ng-src="{{imageFromFile(file)}}" class="img-thumbnail"/>
+                <span ng-click="removeFile(file)"><i class="fa fa-times-circle"></i></span>
+            </div>
+        </div>
+        <button type="button" class="btn btn-default" ng-file-select ng-file-change="uploadedFiles($files)" accept="image/jpg, image/png" ng-multiple="true"><i class="fa fa-paperclip"></i> Subir imagen</button>
+    </div>
+</div>
+<div class="modal-footer">
+    <span ng-show="errorText"><i class="fa fa-exclamation-triangle"></i> {{errorText}}</span>
+    <button type="button" class="btn btn-default" ng-disabled="loading" ng-click="create()">
+        Crear <i ng-show="loading" class="fa fa-spinner fa-pulse"></i>
+    </button>
+	<button type="button" class="btn btn-default" ng-click="dismiss()">
+        Cancelar
+    </button>
+</div>

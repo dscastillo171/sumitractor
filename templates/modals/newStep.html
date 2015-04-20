@@ -1,0 +1,17 @@
+<div class="modal-header ng-scope">
+    <h3 class="modal-title">
+    	Agregar un paso
+    </h3>
+</div>
+<div class="modal-body">
+	<input class="newProcess" type="text" ng-model="newName" placeholder="Nombre" />
+    <p class="error" ng-show="error"><i class="fa fa-exclamation-triangle"></i> Ocurrió un error y no pudimos agregar el paso, por favor intente de nuevo más tarde.</p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-disabled="!newName || newName.length == 0 || loading" ng-click="create()">
+        Crear <i ng-show="loading" class="fa fa-spinner fa-pulse"></i>
+    </button>
+	<button type="button" class="btn btn-default" ng-click="dismiss()">
+        Cancelar
+    </button>
+</div>

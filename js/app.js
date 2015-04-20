@@ -1,7 +1,7 @@
 "use strict";
-angular.module('sumiApp',['ui.router', 'ui.bootstrap', 'ngCookies'])
+angular.module('sumiApp',['ui.router', 'ui.bootstrap', 'ngCookies', 'base64', 'angularFileUpload'])
 .config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function($httpProvider, $stateProvider, $urlRouterProvider) {
-	// Support cross browser requests.
+	// Support cross browser requests.settings
 	delete $httpProvider.defaults.headers.common["X-Requested-With"];
 	
 	// Define app routes.
@@ -15,7 +15,8 @@ angular.module('sumiApp',['ui.router', 'ui.bootstrap', 'ngCookies'])
 
 	// Route for the repairs page
 	.state('home.repairs', {
-		templateUrl : 'templates/repairs.html'
+		templateUrl : 'templates/repairs.html',
+		controller: 'repairsController'
 	})
 
 	// Route for the mechanics page
