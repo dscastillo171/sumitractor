@@ -1,47 +1,26 @@
 angular.module('sumiApp').factory('sumiAPI', ['$http', '$q', function($http, $q){
-	var moc_p = [
-		{'_id': 'p1', 'name': '346-34567-345'},
-		{'_id': 'p2', 'name': '874-45863-763'},
-		{'_id': 'p3', 'name': '127-82359-762'}
-	];
-	var step_p = {
-		'p1': [{_id: 'p11', order: 1, name: 'Step 1'}, {_id: 'p12', order: 2, name: 'Step 2'}],
-		'p2': [{_id: 'p21', order: 1, name: 'Step 1'}, {_id: 'p22', order: 2, name: 'Step 2'}, {_id: 'p23', order: 3, name: 'Step 3'}],
-		'p3': [{_id: 'p31', order: 1, name: 'Step 1'}, {_id: 'p32', order: 2, name: 'Step 2'}]
-	};
-	var pub_p = {};
 
 	// Load the list of processes.
-	var loadProcesses = function(searchQuery){
+	var loadProcesses = function(searchQuery, isTemplate){
 		return $q(function(resolve, reject){
-			$http.get('https://sumitractor2.herokuapp.com/processes' + (searchQuery && searchQuery.length > 0? '?name=' + encodeURIComponent(searchQuery): ''), {responseType: 'json'}).then(function(result){
+			var query = isTemplate? '?isTemplate=true&': '?';
+			if(searchQuery && searchQuery.length > 0){
+				query += 'name=' + encodeURIComponent(searchQuery);
+			}
+
+			$http.get('https://sumitractor2.herokuapp.com/processes' + query, {responseType: 'json'}).then(function(result){
 				resolve(result.data);
 			}, function(){
 				reject();
 			});
 		});
 	};
-	var loadProcesses_moc = function(searchQuery){
-		return $q(function(resolve, reject){
-			if(searchQuery){
-				if(searchQuery.length <= 0){
-					resolve([]);
-				} else if(searchQuery.length > 0 && searchQuery.length < 4){
-					resolve(moc_p);
-				} else{
-					resolve([moc_p[0]])
-				}
-			} else{
-				resolve(moc_p);
-			}
-		});
-	};
 
 	// Create a new process.
-	var pushProcess = function(arg1){
+	var pushProcess = function(arg1, template){
 		if(typeof(arg1) === 'string'){
 			return $q(function(resolve, reject){
-				$http.post('https://sumitractor2.herokuapp.com/processes', {name: arg1}).then(function(result){
+				$http.post('https://sumitractor2.herokuapp.com/processes', {name: arg1, isTemplate: template}).then(function(result){
 					resolve(result.data);
 				}, function(){
 					reject();
@@ -58,43 +37,65 @@ angular.module('sumiApp').factory('sumiAPI', ['$http', '$q', function($http, $q)
 		}
 		
 	};
-	var pushProcess_moc = function(arg1){
-		return $q(function(resolve, reject){
-			if(typeof(arg1) === 'string'){
-				var p = {'_id': 'p' + (moc_p.lenght + 1), 'name': arg1};
-				 moc_p.push(p);
-				 resolve(p);
-			}
-			resolve();
-		});
-	};
 
 	// Delete process.
 	var deleteProcess = function(processId){
 		return $http.delete('https://sumitractor2.herokuapp.com/processes/' + encodeURIComponent(processId));
 	};
 
-	// Load the steps for the given process.
-	var loadSteps = function(processId){
+	// Load the stages for the given process.
+	var loadStages = function(processId){
 		return $q(function(resolve, reject){
-			$http.get('https://sumitractor2.herokuapp.com/steps?process=' + encodeURIComponent(processId), {responseType: 'json'}).then(function(result){
+			$http.get('https://sumitractor2.herokuapp.com/stages?process=' + encodeURIComponent(processId), {responseType: 'json'}).then(function(result){
 				resolve(result.data);
 			}, function(){
 				reject();
 			});
 		});
 	};
-	var loadSteps_moc = function(processId){
+
+	// Create a new stage for the given process.
+	var pushStage = function(arg1, order, name, description){
+		if(typeof(arg1) === 'string'){
+			return $q(function(resolve, reject){
+				$http.post('https://sumitractor2.herokuapp.com/stages', {process: arg1, order: order, name: name, description: description}).then(function(result){
+					resolve(result.data);
+				}, function(){
+					reject();
+				});
+			});
+		} else{
+			return $q(function(resolve, reject){
+				$http.put('https://sumitractor2.herokuapp.com/stages/' + encodeURIComponent(arg1._id), arg1).then(function(result){
+					resolve(result.data);
+				}, function(){
+					reject();
+				});
+			});
+		}
+	};
+
+	// Delete a stage.
+	var deleteStage = function(stage){
+		return $http.delete('https://sumitractor2.herokuapp.com/stages/' + encodeURIComponent(stage._id), stage);
+	};
+
+	// Load the steps for the given stage.
+	var loadSteps = function(stageId){
 		return $q(function(resolve, reject){
-			resolve(step_p[processId] || []);
+			$http.get('https://sumitractor2.herokuapp.com/steps?stage=' + encodeURIComponent(stageId), {responseType: 'json'}).then(function(result){
+				resolve(result.data);
+			}, function(){
+				reject();
+			});
 		});
 	};
 
-	// Create a new step for the given process.
+	// Create a new step for the given stage.
 	var pushStep = function(arg1, order, name){
 		if(typeof(arg1) === 'string'){
 			return $q(function(resolve, reject){
-				$http.post('https://sumitractor2.herokuapp.com/steps', {process: arg1, order: order, name: name}).then(function(result){
+				$http.post('https://sumitractor2.herokuapp.com/steps', {stage: arg1, order: order, name: name}).then(function(result){
 					resolve(result.data);
 				}, function(){
 					reject();
@@ -110,27 +111,11 @@ angular.module('sumiApp').factory('sumiAPI', ['$http', '$q', function($http, $q)
 			});
 		}
 	};
-	var pushStep_moc = function(arg1, order, name){
-		return $q(function(resolve, reject){
-			if(typeof(arg1) === 'string'){
-				var steps = step_p[arg1] || [];
-				steps.push({_id: arg1 + (steps.lenght + 1), order: order, name: name});
-				step_p[arg1] = steps;
-			}
-			resolve();
-		});
-	}
 
 	// Delete a step.
 	var deleteStep = function(step){
 		return $http.delete('https://sumitractor2.herokuapp.com/steps/' + encodeURIComponent(step._id), step);
 	};
-	var deleteStep_moc = function(step){
-		return $q(function(resolve){
-			step_p['p1'] = [step_p['p1'][0]];
-			resolve();
-		});
-	}
 
 	// Load the publications for a given step.
 	var loadPublications = function(stepId){
@@ -140,20 +125,6 @@ angular.module('sumiApp').factory('sumiAPI', ['$http', '$q', function($http, $q)
 			}, function(){
 				reject();
 			});
-		});
-	};
-	var loadPublications_moc = function(stepId){
-		return $q(function(resolve, reject){
-			if(stepId.indexOf('p1') >= 0 || stepId.indexOf('p2') >= 0 || stepId.indexOf('p3') >= 0){
-				resolve([
-					{title: 'Title 1', text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.',
-					images: ['images/placeholder.png', 'images/login.jpg', 'url3'], date: new Date()},
-					{title: 'Title two', text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
-					images: [], date: new Date()}
-				]);
-			} else{
-				resolve(pub_p[stepId] || []);
-			}
 		});
 	};
 
@@ -177,14 +148,6 @@ angular.module('sumiApp').factory('sumiAPI', ['$http', '$q', function($http, $q)
 			});
 		}
 	};
-	var createPublication_moc = function(stepId, text, images){
-		return $q(function(resolve, reject){
-			var pubs = pub_p[stepId] || [];
-			pubs.push({text: text, images: images});
-			pub_p[stepId] = pubs;
-			resolve();
-		});
-	}
 
 	// Delete a publication.
 	var deletePublication = function(publicationId){
@@ -201,6 +164,15 @@ angular.module('sumiApp').factory('sumiAPI', ['$http', '$q', function($http, $q)
 		},
 		"deleteProcess": {
 			value: deleteProcess
+		},
+		"loadStages": {
+			value: loadStages
+		},
+		"pushStage": {
+			value: pushStage
+		},
+		"deleteStage": {
+			value: deleteStage
 		},
 		"loadSteps": {
 			value: loadSteps

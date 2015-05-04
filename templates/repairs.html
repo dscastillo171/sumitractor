@@ -1,7 +1,7 @@
 <div id="repairs" ng-init="init()">
 	<div class="list">
 		<div class="search">
-			<i class="fa fa-search"></i><input type="text" placeholder="Buscar reparaciones" ng-model="searchQuery" />
+			<i class="fa fa-search"></i><input type="text" placeholder="Buscar reparación" ng-model="searchQuery" />
 		</div>
 		<div class="items">
 			<div>
@@ -66,7 +66,7 @@
 			</div>
 		</div>
 		<div class="posts">
-			<div ng-show="activeSteps == null" class="loading"><i class="fa fa-spinner fa-pulse"></i></div>
+			<div ng-show="activeProcess && activeSteps == null" class="loading"><i class="fa fa-spinner fa-pulse"></i></div>
 			<div ng-show="activeSteps.length == 0" class="blank">Esta reparación todavía no tiene pasos definidos.</div>
 			<div class="tittle">
 				{{activeProcess.name}}

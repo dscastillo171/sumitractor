@@ -8,7 +8,7 @@ angular.module('sumiApp').controller('repairsController', ['$scope', '$rootScope
 		};
 
 		// Data containers.
-		$scope.processes, $scope.activeProcess, $scope.activeSteps, $scope.publicationsCount;
+		$scope.processes, $scope.templates, $scope.activeProcess, $scope.activeSteps, $scope.publicationsCount;
 		$scope.editName = $scope.EDIT.STILL; $scope.nameDraft;
 		$scope.editSteps = $scope.EDIT.STILL; $scope.stepsDraft = {};
 
@@ -28,9 +28,17 @@ angular.module('sumiApp').controller('repairsController', ['$scope', '$rootScope
 		$scope.init = function(){
 			$scope.processes = null;
 			sumiAPI.loadProcesses($scope.searchQuery).then(function(processes){
-				$scope.processes = processes;
-				if(!$scope.activeProcess && processes.length > 0){
-					$scope.setAsActiveProcess(processes[0]);
+				$scope.processes = [];
+				$scope.templates = [];
+				for(var i = 0; i < processes.length; i++){
+					if(processes[i].isTemplate){
+						$scope.templates.push(processes[i]);
+					} else{
+						$scope.processes.push(processes[i]);
+					}
+				}
+				if(!$scope.activeProcess && $scope.processes.length > 0){
+					$scope.setAsActiveProcess($scope.processes[0]);
 				}
 			}, function(){
 				// Retry loading the processes.
@@ -44,12 +52,45 @@ angular.module('sumiApp').controller('repairsController', ['$scope', '$rootScope
 		$scope.addProcess = function(){
 			// Open the modal dialog.
 			var modalInstanceController = function($scope, $modalInstance){
+				$scope.selectedTemplate;
 				$scope.newName = '';
 
 				$scope.create = function(){
 					$scope.loading = true;
 					$scope.error = false;
-					sumiAPI.pushProcess($scope.newName).then(function(newProcess){
+
+					$q(function(resolve, reject){
+						// Create the process.
+						sumiAPI.pushProcess($scope.newName).then(function(newProcess){
+							// Load the template's steps.
+							sumiAPI.loadStages($scope.selectedTemplate._id).then(function(stages){
+								// Create the stages on the new process.
+								var stagePromises = [];
+								angular.forEach(stages, function(stage){
+									stagePromises.push($q(function(resolve, reject){
+										sumiAPI.pushStage(newProcess._id, stage.order, stage.name, stage.description).then(function(){
+											// Load the stage's steps.
+											sumiAPI.loadSteps(stage._id).then(function(steps){
+												// Create the steps on the process' stages.
+												var stepsPromises = [];
+												angular.forEach(steps, function(step){
+													stepsPromises.push(sumiAPI.pushStep(stage._id, step.order, step.name));
+												});
+
+												// Wait for all the promises.
+												$q.all(stepsPromises).then(resolve, reject);
+											}, reject);
+										}, reject);
+									}));
+								});
+
+								// Wait for all promises.
+								$q.all(stagePromises).then(function(){
+									resolve(newProcess);
+								}, reject);
+							}, reject);
+						}, reject);
+					}).then(function(newProcess){
 						$scope.loading = false;
 						$modalInstance.close(newProcess);
 					}, function(){
@@ -62,7 +103,7 @@ angular.module('sumiApp').controller('repairsController', ['$scope', '$rootScope
 				};
 			};
 
-			// Display the instance.
+			/* Display the instance.
 			var modalInstance = $modal.open({
 				'templateUrl': 'templates/modals/newProcess.html',
 				'controller': modalInstanceController,
@@ -73,7 +114,7 @@ angular.module('sumiApp').controller('repairsController', ['$scope', '$rootScope
 			modalInstance.result.then(function(process){
 				$scope.init();
 				$scope.setAsActiveProcess(process);
-			});
+			});*/
 		};
 
 		// Save the process' name.

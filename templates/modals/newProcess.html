@@ -4,7 +4,17 @@
     </h3>
 </div>
 <div class="modal-body">
+    <span>Identificador</span>
 	<input class="newProcess" type="text" ng-model="newName" placeholder="Identificador" />
+    <span>Plantilla</span>
+    <span class="dropdown" dropdown on-toggle="toggled(open)">
+        <a href class="dropdown-toggle" dropdown-toggle>
+            Click me for a dropdown, yo!
+        </a>
+        <ul class="dropdown-menu">
+            <li ng-repeat="choice in items"><a href>{{choice}}</a></li>
+        </ul>
+    </span>
     <p class="error" ng-show="error"><i class="fa fa-exclamation-triangle"></i> Ocurrió un error y no pudimos crear la reparación, por favor intente de nuevo más tarde.</p>
 </div>
 <div class="modal-footer">

@@ -1,0 +1,56 @@
+Prioridad para (4 de Mayo)
+- Subir plantillas por defecto.
+	Pasos y subpaso. Cada subpaso tiene titulo y descripcion.
+- Al momento de generar una reparacion. esojo la plantilla.
+	Ajusto home, respecto a esas plantillas generadas.
+- Ajustar bugs.
+- Siempre foto en anotacion.
+- Ajustar el toolbar.
+
+Ya los procesos les puse un atributo isTemplate
+Por defecto en false
+Y ya estan las etapas
+Stages
+Proceso -> stage -> step -> publication
+
+- Genral perfiles
+
+- Ajustar para moviles.
+
+Terminologia
+- Reparacion -> OT
+- Mecanicos -> Tecnicos
+
+Notas para el proximo release:
+
+- 2 gerarquias de pasos.
+- Pasos por defecto, en settings.
+- Asociar una OT con una cotizacion y un cliente.
+- Nota de voz.
+- Cambiar foto de fondo (login).
+- Bug al borrar una reparacion.
+- Bajar el tamaño del fondo.
+- Precargar procesos.
+- Bug en boton de agregar imagen.
+- Solo puede editar y borrar el autor.
+- 2 tipos de usuarios.
+- Pie de pagina.
+- Mecanicos.
+- En plantillas, puedo agregar documentacion y medidas (parametros).
+
+En iphone:
+- Layout se descuadra.
+
+Notas:
+- 2 gerarquias
+
+#
+ 783788266
+
+Pendingzzz
+- Organize conversations (Chats), locked first.
+- 'No pending chats.' Message when empty.
+- :p
+- When all conversations have been evacuated, active chat is still present.
+
+sum1tr4ct0r2015

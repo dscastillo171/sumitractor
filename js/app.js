@@ -26,7 +26,8 @@ angular.module('sumiApp',['ui.router', 'ui.bootstrap', 'ngCookies', 'base64', 'a
 
 	// Route for the settings page
 	.state('home.settings', {
-		templateUrl : 'templates/settings.html'
+		templateUrl : 'templates/settings.html',
+		controller: 'settingsController'
 	})
 
 	// Route for the login page.

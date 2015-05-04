@@ -1,1 +1,78 @@
-<div class="construction"><div><i class="fa fa-code"></i> En construcción</div></div>
+<div id="settings" ng-init="init()">
+	<!-- Templates -->
+	<div>
+		<div class="title">
+			<h3>Plantillas</h3>
+			<a ng-click="addTemplate()">Agregar plantilla</a>
+		</div>
+		<div>
+			<div class="loading" ng-show="templates == null"><i class="fa fa-spinner fa-pulse"></i></div>
+			<div class="empty" ng-show="templates.length == 0">No hay plantillas definidas.</div>
+			<div class="template clearfix" ng-repeat="template in templates">
+				<div>
+					<div>{{template.name}}</div>
+					<div>
+						Identificador 
+						<i ng-click="template.editingName = true" ng-hide="template.editingName" class="fa fa-pencil-square-o"></i>
+						<i ng-click="template.editingName = false; saveTemplateName(template)" ng-show="template.editingName" class="fa fa-check-square-o"></i>
+						<span ng-hide="template.editingName">{{template.name}}</span>
+						<input ng-show="template.editingName" type="text" ng-model="template.name" />
+					</div>
+					<div>
+						Opciones
+						<span ng-click="deleteTemplate(template)"><i class="fa fa-trash-o"></i> Eliminar plantilla</span>
+					</div>
+				</div>
+				<div>
+					<ol class="list-unstyled">
+						<li class="loadingStages" ng-show="template.stages == null"><i class="fa fa-spinner fa-pulse"></i></li>
+						<li ng-hide="template.stages == null" ng-repeat="stage in template.stages">
+							<span ng-click="expand(template, stage)" ng-init="example = true;">{{stage.name}}</span>
+							<div collapse="!stage.expand" class="substeps">
+								<span>
+									Nombre 
+									<i ng-hide="stage.editingName" ng-click="stage.editingName = true" class="fa fa-pencil-square-o"></i>
+									<i ng-show="stage.editingName" ng-click="stage.editingName = false; saveStage(stage)" class="fa fa-check-square-o"></i>
+								</span>
+								<div>
+									<p ng-hide="stage.editingName">{{stage.name}}</p>
+									<input ng-show="stage.editingName" type="text" ng-model="stage.name"/>
+								</div>
+								<span>
+									Descripción 
+									<i ng-hide="stage.editingDescription" ng-click="stage.editingDescription = true" class="fa fa-pencil-square-o"></i>
+									<i ng-show="stage.editingDescription" ng-click="stage.editingDescription = false; saveStage(stage)" class="fa fa-check-square-o"></i>
+								</span>
+								<div>
+									<p ng-hide="stage.editingDescription">{{stage.description || '-'}}</p>
+									<textarea ng-show="stage.editingDescription" ng-model="stage.description"></textarea>
+								</div>
+								<span>Subpasos 
+									<i ng-show="!stage.editingSteps && stage.steps && stage.steps.length > 0" ng-click="stage.editingSteps = true" class="fa fa-pencil-square-o"></i>
+									<i ng-show="stage.editingSteps" ng-click="stage.editingSteps = false; saveSteps(stage)" class="fa fa-check-square-o"></i>
+								</span>
+								<ul class="list-unstyled">
+									<li class="step" ng-repeat="step in stage.steps" ng-show="!step.deleted">
+										<span ng-hide="stage.editingSteps">{{step.name}}</span>
+										<input ng-show="stage.editingSteps" type="text" ng-model="step.name"/>
+										<div ng-show="stage.editingSteps">
+											<i ng-click="moveStep(stage, step, true)" class="fa fa-arrow-circle-o-up {{$first && 'disabled' || ' '}}"></i>
+											<i ng-click="moveStep(stage, step, false)" class="fa fa-arrow-circle-o-down {{$last && 'disabled' || ' '}}"></i>
+											<i ng-click="step.deleted = true" class="fa fa-times-circle-o"></i>
+										</div>
+									</li>
+									<li ng-hide="stage.editingSteps" class="add"><span ng-click="addStep(stage)"><i class="fa fa-plus-square-o"></i> Agregar subpaso</span></li>
+								</ul>
+								<span>Opciones</span>
+								<a ng-click="moveStage(template, stage, true)" ng-hide="$first"><i class="fa fa-arrow-circle-o-up"></i> Subir posición</a><br ng-hide="$first" />
+								<a ng-click="moveStage(template, stage, false)" ng-hide="$last"><i class="fa fa-arrow-circle-o-down"></i> Bajar posición</a><br ng-hide="$last" />
+								<a ng-click="deleteStage(template, stage)" class="last"><i class="fa fa-trash-o"></i> Eliminar paso</a>
+							</div>
+						</li>
+						<li ng-click="addStage(template)" class="add" ng-hide="template.stages == null"><span><i class="fa fa-plus-square-o"></i> Agregar subpaso</span></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
